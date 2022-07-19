@@ -22,52 +22,104 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# 分享架構
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Nest 是什麼？
 
-## Installation
+# Quick Start
 
-```bash
-$ npm install
+### 安裝 nest
+
+```sql
+sudo npm i -g @nestjs/cli
 ```
 
-## Running the app
+### 創建專案資料夾（請自行代換 `project-name` ）
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```sql
+nest new project-name 
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```sql
+npm run start:dev
 ```
 
-## Support
+當當！你已經用 nsetJS 做出一個小小的專案了
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 用 `commamd line` 製作出一組 controller
 
-## Stay in touch
+```sql
+nest g controller cats
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 如何 GET ？
 
-## License
+舉例： `cat.contriller.ts`
 
-Nest is [MIT licensed](LICENSE).
+```jsx
+import { Controller, Get } from '@nestjs/common';
+
+@Controller('cats')
+export class CatsController {
+  @Get("abc")
+  findAll(): string {
+    return 'This action returns all cats';
+  }
+}
+```
+
+route →  GET `/cats/abc`
+
+[NestJS versus Express](https://www.notion.so/a5b1cf207a4d40a19bf3cf7c2929dbdb)
+
+### 如何取得 GET 參數？
+
+```jsx
+import { Controller, Get, Param } from '@nestjs/common';
+
+const cats = {
+  0: 'Larry',
+  1: 'Hank',
+};
+
+@Controller('cats')
+export class CatsController {
+  @Get('/:id')
+  find(@Param() params) {
+    return { cat_name: cats[params.id] };
+  }
+}
+```
+
+request → [`http://localhost:3000/cats/0`](http://localhost:3000/cats/0)
+
+response → `{"cat_name":"Larry"}`
+
+### 如何 POST ?
+
+```jsx
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { CreateCatDto } from './dto';
+
+const cats = {
+  0: 'Larry',
+  1: 'Hank',
+};
+
+@Controller('cats')
+export class CatsController {
+  @Post()
+  @HttpCode(201)
+  create(@Body() createCatDto: CreateCatDto) {
+    return `Your new cat is ${createCatDto.name}`;
+  }
+}
+```
+
+# eslint 排版問題
+
+安裝 `prettier eslint` 到 VScode
+
+`shift` + `command` + `p` → 輸入 `format document...`
+
+選擇 `prettier eslint`
