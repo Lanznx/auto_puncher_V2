@@ -1,24 +1,52 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { CreateCatDto } from './dto';
-
-const cats = {
-  0: 'Larry',
-  1: 'Hank',
-};
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateCatDto } from './dto/cat.dto';
+import { CatsService } from './cats.service';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
   @Get()
-  findAll(): string {
-    return 'this is all the cats';
+  async find_all_cats() {
+    return this.catsService.find_all_cats();
   }
+
   @Get('/:id')
-  find(@Param() params) {
-    return { cat_name: cats[params.id] };
+  async find(@Param() params) {
+    return this.catsService.find_cat_by_id(params.id);
   }
+
+  @Post('friend')
+  @HttpCode(201)
+  create_cat_friend(
+    @Body() data: { name: string; age: number; whose_friend: string },
+  ) {
+    return this.catsService.create_cat_friend(data);
+  }
+
   @Post()
   @HttpCode(201)
-  create(@Body() createCatDto: CreateCatDto) {
-    return `Your new cat is ${createCatDto.name}`;
+  async create_cat(@Body() createCatDto: CreateCatDto) {
+    return this.catsService.create_cat(createCatDto);
+  }
+
+  @Put()
+  @HttpCode(200)
+  async update_cat(@Body() createCatDto: CreateCatDto) {
+    return this.catsService.update_cat(createCatDto);
+  }
+
+  @Delete()
+  @HttpCode(200)
+  async delete_cat_by_name(@Body() data: { name: string }) {
+    return this.catsService.delete_cat(data.name);
   }
 }
