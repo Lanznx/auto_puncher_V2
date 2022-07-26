@@ -21,7 +21,8 @@ export class CatsController {
 
   @Get('/:id')
   async find(@Param() params) {
-    return this.catsService.find_cat_by_id(params.id);
+    const result = await this.catsService.find_cat_by_id(params.id);
+    return result;
   }
 
   @Post('friend')

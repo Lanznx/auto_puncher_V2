@@ -9,7 +9,7 @@ export class CreateUserDto {
   email: string;
   @IsString()
   @IsNotEmpty()
-  password: number;
+  password: string;
 }
 
 export class SignForSheetDto {

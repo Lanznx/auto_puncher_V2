@@ -10,19 +10,4 @@ export class User extends Model {
 
   @Column
   password: string;
-
-  @Column
-  sheetKey: string;
-
-  @Column
-  onWorkTime: string;
-
-  @Column
-  offWorkTime: string;
-
-  @Column
-  workHours: string;
-
-  @Column
-  crontabString: string;
 }

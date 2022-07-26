@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { Cat } from '../entity/cat.entity';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/entity/user.entity';
+import { AutoPuncher } from 'src/entity/auto_puncher.entity';
 
 export const databaseProviders = [
   {
@@ -16,7 +17,7 @@ export const databaseProviders = [
         password: configService.get('DATABASE_PASS'),
         database: configService.get('DATABASE_NAME'),
       });
-      sequelize.addModels([Cat, User]);
+      sequelize.addModels([Cat, User, AutoPuncher]);
       await sequelize.sync();
       return sequelize;
     },
