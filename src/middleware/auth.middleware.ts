@@ -12,9 +12,10 @@ export class AuthMiddleware implements NestMiddleware {
       throw new CustomException(1032);
     }
     const result = await this.userService.verifyToken(token);
-    if (!result) {
+    if (!result['isValid']) {
       throw new CustomException(1032);
     }
+    req.body.tokenData = result.data;
 
     next();
   }

@@ -11,8 +11,8 @@ export class UserService {
   constructor(private repo: UserRepository) {
     this.jwtService = new JwtService();
   }
-  async getMyRecord(username: string) {
-    const result = await this.repo.getMyRecord(username);
+  async getMyData(username: string) {
+    const result = await this.repo.getMyData(username);
     return result;
   }
 
@@ -42,7 +42,7 @@ export class UserService {
     if (!user) {
       throw new CustomException(1005);
     }
-    const isVerify = this.verifyPassword(user.password, password);
+    const isVerify = await this.verifyPassword(user.password, password);
     if (!isVerify) {
       throw new CustomException(1003);
     }
@@ -75,6 +75,9 @@ export class UserService {
     const result = await this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET_KEY,
     });
-    return result;
+    if (result) {
+      const data = await this.jwtService.decode(token);
+      return { isValid: true, data: data };
+    } else return { isValid: false };
   }
 }

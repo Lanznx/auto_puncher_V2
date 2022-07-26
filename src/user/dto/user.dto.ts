@@ -11,24 +11,3 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 }
-
-export class SignForSheetDto {
-  @IsJSON()
-  @IsNotEmpty()
-  credentials: JSON;
-  @IsString()
-  @IsNotEmpty()
-  sheetKey: string;
-  @IsString()
-  @IsNotEmpty()
-  onWorkTime: string;
-  @IsString()
-  @IsNotEmpty()
-  offWorkTime: string;
-  @IsString()
-  @IsNotEmpty()
-  workHours: string;
-  @IsString()
-  @IsNotEmpty()
-  crontabString: string;
-}

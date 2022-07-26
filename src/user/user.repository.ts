@@ -7,7 +7,7 @@ export class UserRepository {
     @Inject('User')
     private user: typeof User,
   ) {}
-  async getMyRecord(username) {
+  async getMyData(username) {
     const result = await this.user.findOne({
       where: { username: username },
     });
@@ -18,6 +18,7 @@ export class UserRepository {
       username: user.username,
       password: user.password,
       email: user.email,
+      subscribe: true,
     });
     return result;
   }
