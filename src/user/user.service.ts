@@ -65,7 +65,7 @@ export class UserService {
   }
 
   async signToken(username, email) {
-    const tokenDuration = Duration.fromObject({ days: 30 });
+    const tokenDuration = Duration.fromObject({ days: 1 });
     const dateTime = DateTime.utc();
     const now = Math.round(dateTime.ts / 1000);
     const expired = Math.round(dateTime.plus(tokenDuration).ts / 1000);

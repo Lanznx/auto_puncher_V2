@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { AutoPuncherRepository } from './auto_puncher.repository';
-import { OAuth2Client } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 @Injectable()
 export class AutoPuncherService {
@@ -17,6 +16,9 @@ export class AutoPuncherService {
       const result = await this.autoPuncherRepository.getRecord(
         userData['dataValues']['username'],
       );
+
+      // TO-DO:
+      // 1. identify crontab string
       result['dataValues']['email'] = userData['email'];
       const cleanResult = result['dataValues'];
       console.log(cleanResult);
