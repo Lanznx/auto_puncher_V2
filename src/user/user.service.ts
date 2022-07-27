@@ -16,6 +16,16 @@ export class UserService {
     return result;
   }
 
+  async startSubscribe(username: string) {
+    const result = await this.repo.startSubscribe(username);
+    return result[0];
+  }
+
+  async cancelSubscribe(username: string) {
+    const result = await this.repo.cancelSubscribe(username);
+    return result[0];
+  }
+
   async signUp(user) {
     const userResult = await this.repo.findUserByName(user.username);
     if (userResult !== null) {

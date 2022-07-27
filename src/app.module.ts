@@ -3,19 +3,16 @@ import { CatsModule } from './cats/cats.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-// import { RouterModule } from '@nestjs/core';
-import { AutoPuncher } from './auto_puncher';
-import { AutoPuncherService } from './auto_puncher/auto_puncher.service';
-import { AutoPuncherController } from './auto_puncher/auto_puncher.controller';
 import { AutoPuncherModule } from './auto_puncher/auto_puncher.module';
+// import { RouterModule } from '@nestjs/core';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AutoPuncherModule,
     CatsModule,
     DatabaseModule,
-    ConfigModule.forRoot({ isGlobal: true }),
     UserModule,
-    AutoPuncherModule,
     // RouterModule.register([
     //   {
     //     path: 'user',
@@ -23,7 +20,5 @@ import { AutoPuncherModule } from './auto_puncher/auto_puncher.module';
     //   },
     // ]),
   ],
-  providers: [AutoPuncher, AutoPuncherService],
-  controllers: [AutoPuncherController],
 })
 export class AppModule {}

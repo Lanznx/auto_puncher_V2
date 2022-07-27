@@ -6,13 +6,14 @@ import {
 } from '@nestjs/common';
 import { userProviders } from './user.provider';
 import { UserController } from './user.controller';
-import { UserRepository } from './user.repository';
-import { UserService } from './user.service';
 import { AuthMiddleware } from 'src/middleware/auth.middleware';
+import { UserService } from './user.service';
+import { UserRepository } from './user.repository';
 
 @Module({
   providers: [UserService, UserRepository, ...userProviders],
   controllers: [UserController],
+  exports: [UserService, UserRepository],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

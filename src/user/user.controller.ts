@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Head,
-  HttpCode,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/user.dto';
 
@@ -28,16 +20,32 @@ export class UserController {
     return { success: true, data: result };
   }
 
-  @Post('myData')
+  @Get('myData')
   @HttpCode(200)
-  async getMyData(@Body() data: { username: string }) {
-    const result = await this.userService.getMyData(data.username);
+  async getMyData(@Body() data: { tokenData }) {
+    const result = await this.userService.getMyData(data.tokenData.username);
     return { success: true, data: result };
   }
 
-  @Post('cancel')
+  @Get('start')
   @HttpCode(200)
-  async cancel(@Body() data: { username: string }) {
-    return data;
+  async startSubscribe(@Body() data: { tokenData }) {
+    const result = await this.userService.startSubscribe(
+      data.tokenData.username,
+    );
+    if (result === 1)
+      return { success: true, message: 'successfully subscribe!!' };
+    else return { success: false, message: 'already subscribed!!' };
+  }
+
+  @Get('cancel')
+  @HttpCode(200)
+  async cancelSubscribe(@Body() data: { tokenData }) {
+    const result = await this.userService.cancelSubscribe(
+      data.tokenData.username,
+    );
+    if (result === 1)
+      return { success: true, message: 'successfully cancel subscribe!!' };
+    else return { success: false, message: 'already cancel subscribed!!' };
   }
 }
