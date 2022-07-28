@@ -51,6 +51,18 @@ export const errors = {
     level: 'info',
     key: 'user',
   },
+  '1020': {
+    code: 1020,
+    msg: 'Cannot access the sheet, please grant the access or change the sheet key',
+    level: 'warning',
+    key: 'user',
+  },
+  '1021': {
+    code: 1021,
+    msg: 'Credential is invlaid',
+    level: 'warning',
+    key: 'user',
+  },
   '1032': {
     code: 1032,
     msg: 'Invalid token',

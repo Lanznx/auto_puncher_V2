@@ -57,6 +57,39 @@ export class AutoPuncherService {
     }
   }
 
+  async checkCredential(credential, sheetKey) {
+    try {
+      const doc = new GoogleSpreadsheet(sheetKey);
+      await doc.useServiceAccountAuth(credential);
+      await doc.useServiceAccountAuth({
+        client_email: credential.client_email,
+        private_key: credential.private_key,
+      });
+      await doc.useServiceAccountAuth(credential, credential.client_email);
+      await doc.loadInfo();
+      const sheet = doc.sheetsByIndex[0];
+      await sheet.loadCells('A1:D1000');
+      const res = sheet.getCell(1, 1);
+    } catch (error) {
+      if (error['message'] !== undefined) {
+        return {
+          success: false,
+          code: 1021,
+        };
+      } else if (error['response']['status'] !== undefined) {
+        return {
+          success: false,
+          code: 1020,
+        };
+      } else {
+        return {
+          success: false,
+        };
+      }
+    }
+    return { success: true };
+  }
+
   async addRecord(record) {
     const result = await this.autoPuncherRepository.addRecord(
       record,

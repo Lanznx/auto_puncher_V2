@@ -48,7 +48,7 @@ export class UserRepository {
       username: user.username,
       password: user.password,
       email: user.email,
-      subscribe: true,
+      subscribe: false,
     });
     return result;
   }

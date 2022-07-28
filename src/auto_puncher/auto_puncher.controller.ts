@@ -16,12 +16,17 @@ import { UsePipes, ValidationPipe } from '@nestjs/common';
 export class AutoPuncherController {
   constructor(private autoPuncherService: AutoPuncherService) {}
 
-  @Get('trigger')
-  async trigger() {
-    this.autoPuncherService.punchAllUserSheet();
+  @Post('trigger')
+  async trigger(@Body() data: { credential; sheetKey }) {
+    const result = await this.autoPuncherService.checkCredential(
+      data.credential,
+      data.sheetKey,
+    );
+    const isValid = result['success'];
+    console.log(isValid);
   }
 
-  @Post()
+  @Post('edit')
   @HttpCode(201)
   async addRecord(@Body() data: SignForSheetDto) {
     const result = await this.autoPuncherService.addRecord(data);
@@ -34,7 +39,7 @@ export class AutoPuncherController {
     return this.autoPuncherService.getRecord(data.tokenData.username);
   }
 
-  @Put()
+  @Put('edit')
   @HttpCode(200)
   async updateRecord(@Body() data: SignForSheetDto) {
     return this.autoPuncherService.updateRecord(data);
