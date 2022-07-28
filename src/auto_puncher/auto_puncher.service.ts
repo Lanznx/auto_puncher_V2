@@ -71,21 +71,13 @@ export class AutoPuncherService {
       await sheet.loadCells('A1:D1000');
       const res = sheet.getCell(1, 1);
     } catch (error) {
-      if (error['message'] !== undefined) {
-        return {
-          success: false,
-          code: 1021,
-        };
-      } else if (error['response']['status'] !== undefined) {
-        return {
-          success: false,
-          code: 1020,
-        };
-      } else {
-        return {
-          success: false,
-        };
+      try {
+        error['response']['status'];
+      } catch (e) {
+        return { success: false, code: 1021 };
       }
+      // 目前的情況是：非「credential 無效」則「sheetKey 無效」
+      return { success: false, code: 1020 };
     }
     return { success: true };
   }
