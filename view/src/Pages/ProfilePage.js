@@ -19,6 +19,7 @@ import {
   getMyData,
   getMyRecord,
   startSubscribe,
+  updateRecord,
 } from './API';
 
 const ITEM_HEIGHT = 48;
@@ -148,7 +149,7 @@ export default function ProfilePage() {
       return;
     }
     const credential = JSON.parse(data.get('credential'));
-    const result = await addRecord(
+    const result = await updateRecord(
       sheetKey,
       credential,
       onWorkTime,

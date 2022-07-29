@@ -16,7 +16,9 @@ function Copyright() {
 
 export default function Footer() {
   return (
-    <Box sx={{ bottom: 0, position: 'absolute', width: '100%' }}>
+    <Box
+      sx={{ bottom: 0, position: 'absolute', width: '100%', height: '10px' }}
+    >
       <CssBaseline />
       <Box
         component="footer"
