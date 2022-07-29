@@ -10,21 +10,28 @@ import {
 import { SignForSheetDto } from 'src/auto_puncher/dto/auto_puncher.dto';
 import { AutoPuncherService } from './auto_puncher.service';
 import { UsePipes, ValidationPipe } from '@nestjs/common';
+const CronJob = require('cron').CronJob;
 
 @UsePipes(new ValidationPipe({ transform: true }))
 @Controller('auto-puncher/record')
 export class AutoPuncherController {
   constructor(private autoPuncherService: AutoPuncherService) {}
 
-  @Post('trigger')
-  async trigger(@Body() data: { credential; sheetKey }) {
-    const result = await this.autoPuncherService.checkCredential(
-      data.credential,
-      data.sheetKey,
-    );
-    const isValid = result['success'];
-    console.log(isValid);
+  @Get('trigger')
+  async trigger(@Body() data: { token }) {
+    const result = await this.autoPuncherService.punchAllUserSheet();
+    return result;
   }
+
+  job = new CronJob(
+    '* * * * 1-5',
+    () => {
+      this.autoPuncherService.punchAllUserSheet();
+    },
+    null,
+    true,
+    'Asia/Taipei',
+  );
 
   @Post('edit')
   @HttpCode(201)

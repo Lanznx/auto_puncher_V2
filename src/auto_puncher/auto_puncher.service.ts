@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { AutoPuncherRepository } from './auto_puncher.repository';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+const nodeMailer = require('nodemailer');
+
 @Injectable()
 export class AutoPuncherService {
   constructor(
@@ -16,12 +18,12 @@ export class AutoPuncherService {
       const result = await this.autoPuncherRepository.getRecord(
         userData['dataValues']['username'],
       );
-
-      // TO-DO:
-      // 1. identify crontab string
       result['dataValues']['email'] = userData['email'];
       const cleanResult = result['dataValues'];
-      console.log(cleanResult);
+      const userWorkDays = cleanResult['crontabString'].split(',');
+      const today = new Date().getDay().toString();
+      if (!userWorkDays.includes(today)) continue;
+
       const creds = cleanResult['credential'];
       const doc = new GoogleSpreadsheet(cleanResult['sheetKey']);
       await doc.useServiceAccountAuth(creds);
@@ -35,7 +37,6 @@ export class AutoPuncherService {
       await sheet.loadCells('A1:D1000');
       for (let index = 0; index < 1000; index++) {
         const emptyCell = sheet.getCell(index, 1);
-        console.log(emptyCell);
         if (emptyCell['_rawData']['formattedValue'] === undefined) {
           emptyCell.value = 'hello world';
           sheet.getCell(index, 0).value = JSON.stringify(
@@ -54,7 +55,36 @@ export class AutoPuncherService {
           break;
         }
       }
+      this.sendMail(
+        cleanResult['email'],
+        cleanResult['username'],
+        cleanResult['sheetKey'],
+      );
     }
+  }
+
+  async sendMail(email, username, sheetKey) {
+    const transporter = nodeMailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      auth: {
+        user: process.env.EMAIL_HOST,
+        pass: process.env.APP_SECRET,
+      },
+    });
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_HOST,
+      to: email,
+      subject: '打卡囉！',
+      text: `${username} 您好，今天是${JSON.stringify(
+        new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
+      )
+        .replace('"', '')
+        .replace(
+          '"',
+          '',
+        )}\n已完成打卡，若要取消打卡，請至您的試算表刪除紀錄\nhttps://docs.google.com/spreadsheets/d/${sheetKey}/`,
+    });
   }
 
   async checkCredential(credential, sheetKey) {
