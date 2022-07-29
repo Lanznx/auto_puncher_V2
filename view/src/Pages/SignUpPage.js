@@ -34,7 +34,6 @@ export default function SignUpPage() {
       data.get('password'),
     );
     if (result.success) {
-      console.log(result.data);
       window.localStorage.setItem('token', result.data);
       window.location.href = '/';
     } else {

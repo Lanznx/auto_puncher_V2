@@ -70,7 +70,6 @@ export default function ProfilePage() {
       setIsSubscribed(false);
     }
     const data = result['data'];
-    console.log(data, ' data');
 
     setWorkDays(data.crontabString.split(','));
     setOnWorkTime(data.onWorkTime);
@@ -234,7 +233,6 @@ export default function ProfilePage() {
                 sx={{ width: '30%', margin: '1%' }}
                 onClick={async () => {
                   const result = await startSubscribe();
-                  console.log(result);
                   if (result) {
                     Swal.fire({
                       title: 'Success',
@@ -260,7 +258,6 @@ export default function ProfilePage() {
                 sx={{ width: '30%', margin: '1%' }}
                 onClick={async () => {
                   const result = await cancelSubscribe();
-                  console.log(result);
                   if (result) {
                     Swal.fire({
                       title: 'Success',

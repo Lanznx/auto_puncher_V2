@@ -10,11 +10,9 @@ async function signUp(username, email, password) {
       password,
     })
     .then((response) => {
-      console.log(response.data, ' response.data');
       return response.data;
     })
     .catch((error) => {
-      console.log(error.response.data, ' error');
       return error.response.data;
     });
 
@@ -28,11 +26,9 @@ async function signIn(username, password) {
       password,
     })
     .then((response) => {
-      console.log(response.data, ' response.data');
       return response.data;
     })
     .catch((error) => {
-      console.log(error.response.data, ' error');
       return error.response.data;
     });
 

@@ -19,10 +19,6 @@ export default function SignInPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
 
     const result = await signIn(data.get('username'), data.get('password'));
     if (result.success) {
