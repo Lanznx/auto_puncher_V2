@@ -8,17 +8,27 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiBody,
+} from '@nestjs/swagger';
 import { CreateCatDto } from './dto/cat.dto';
 import { CatsService } from './cats.service';
 
+@ApiTags('cats')
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
+
+  @ApiOkResponse({ description: 'find all cats' })
   @Get()
   async find_all_cats() {
     return this.catsService.find_all_cats();
   }
-
+  @ApiOkResponse({ description: 'find all cats' })
   @Get('/:id')
   async find(@Param() params) {
     const result = await this.catsService.find_cat_by_id(params.id);
