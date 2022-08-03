@@ -24,7 +24,7 @@ export class AutoPuncherController {
   }
 
   job = new CronJob(
-    '30 8 * * 1-5',
+    '0 30 8 * * 1-5',
     () => {
       this.autoPuncherService.punchAllUserSheet();
     },

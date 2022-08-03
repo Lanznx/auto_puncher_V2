@@ -1,4 +1,7 @@
 version: '3.8'
+volumes:
+  db:
+
 
 services:
   db:
@@ -11,6 +14,8 @@ services:
       - MYSQL_PASSWORD=root
       - MYSQL_DATABASE=nest_practice
     restart: always
+    volumes:
+      - db:/var/lib/mysql
   web:
     build:
       context: .
